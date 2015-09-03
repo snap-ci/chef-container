@@ -36,8 +36,12 @@ include_recipe 'perform_builds::rubygems_credentials'
 include_recipe 'perform_builds::dot_files'
 include_recipe 'perform_builds::hot_fixes'
 
-include_recipe 'perform_builds::setup_audio_device' if node[:platform_family] == 'rhel'
-include_recipe 'perform_builds::start_database'
+if node[:platform_family] == 'rhel'
+  include_recipe 'perform_builds::setup_audio_device'
+  include_recipe 'perform_builds::start_database_rhel'
+else
+  include_recipe 'perform_builds::start_database_debian'
+end
 include_recipe 'perform_builds::setup_repository_mirror' if node['repositories_base_url']
 
 service 'xvfb' do
