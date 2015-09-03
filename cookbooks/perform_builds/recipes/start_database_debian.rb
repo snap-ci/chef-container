@@ -1,5 +1,6 @@
 database = node.project[:database]
 
+execute 'service postgresql stop'
 if database
   case database
     when 'postgresql'
