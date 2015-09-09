@@ -29,6 +29,7 @@ node.perform_builds.container_dirs.each do |name, perms|
   end
 end
 
+include_recipe 'git_user'
 include_recipe 'perform_builds::setup_ssh'
 include_recipe 'perform_builds::git_clone'
 include_recipe 'perform_builds::heroku_credentials'

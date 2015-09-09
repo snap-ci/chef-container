@@ -1,5 +1,3 @@
-include_recipe 'git_user'
-
 git_repository_organization_name, git_repository_name = node.project.git.repository_full_name.split('/')
 
 git_repository_organization_name_path = ::File.join("/var/lib/git", git_repository_organization_name)
