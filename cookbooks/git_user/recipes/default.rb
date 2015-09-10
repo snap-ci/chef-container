@@ -11,6 +11,12 @@ user "git" do
   supports ({ :manage_home => true })
 end
 
+directory '/var/lib/git' do
+  owner 'git'
+  group 'git'
+  mode '0700'
+end
+
 directory "/var/lib/git/.ssh" do
   owner "git"
   group "git"
