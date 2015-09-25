@@ -1,3 +1,4 @@
 ---
 BUNDLE_PATH: /var/go/.bundled-gems
+BUNDLE_BIN: /var/go/.bundled-bin
 BUNDLE_JOBS: '4'
