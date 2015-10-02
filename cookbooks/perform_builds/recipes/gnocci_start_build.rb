@@ -44,6 +44,7 @@ else
   include_recipe 'perform_builds::start_database_debian'
   service 'docker' do
     action [:restart]
+    provider Chef::Provider::Service::Upstart
   end
 end
 include_recipe 'perform_builds::setup_repository_mirror' if node['repositories_base_url']
