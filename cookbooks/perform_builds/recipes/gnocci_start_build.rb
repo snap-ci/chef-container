@@ -42,6 +42,9 @@ if node[:platform_family] == 'rhel'
   include_recipe 'perform_builds::start_database_rhel'
 else
   include_recipe 'perform_builds::start_database_debian'
+  service 'docker' do
+    action [:restart]
+  end
 end
 include_recipe 'perform_builds::setup_repository_mirror' if node['repositories_base_url']
 
