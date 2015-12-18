@@ -16,15 +16,28 @@ directory git_clone_path do
   recursive true
 end
 
-execute "perform_git_clone" do
-  command "git clone --mirror #{node.project.git.clone_url} #{git_clone_path}"
-  user "git"
-  group "git"
+if node.fast_git_clone
+  execute "perform_git_clone" do
+    command "git clone --depth=10 --no-single-branch --mirror #{node.project.git.clone_url} #{git_clone_path}"
+    user "git"
+    group "git"
 
-  retry_delay 5
-  retries     10
+    retry_delay 5
+    retries     10
 
-  creates ::File.join(git_clone_path, 'HEAD')
+    creates ::File.join(git_clone_path, 'HEAD')
+  end
+else
+  execute "perform_git_clone" do
+    command "git clone --mirror #{node.project.git.clone_url} #{git_clone_path}"
+    user "git"
+    group "git"
+
+    retry_delay 5
+    retries     10
+
+    creates ::File.join(git_clone_path, 'HEAD')
+  end
 end
 
 execute "perform_git_sync" do
