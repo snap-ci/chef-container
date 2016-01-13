@@ -1,6 +1,7 @@
 git_repository_organization_name, git_repository_name = node.project.git.repository_full_name.split('/')
+git_home_directory = "/var/lib/git"
 
-git_repository_organization_name_path = ::File.join("/var/lib/git", git_repository_organization_name)
+git_repository_organization_name_path = ::File.join(git_home_directory, git_repository_organization_name)
 directory git_repository_organization_name_path do
   owner "git"
   group "git"
@@ -17,7 +18,7 @@ directory git_clone_path do
 end
 
 execute "perform_git_clone" do
-  command "git clone --mirror #{node.project.git.clone_url} #{git_clone_path}"
+  command "git clone --depth 50 --mirror #{node.project.git.clone_url} #{git_clone_path}"
   user "git"
   group "git"
 
@@ -28,7 +29,7 @@ execute "perform_git_clone" do
 end
 
 execute "perform_git_sync" do
-  command "git fetch --prune --all"
+  command "git fetch --depth 50 --prune --all"
   cwd git_clone_path
   user "git"
   group "git"
@@ -37,6 +38,13 @@ execute "perform_git_sync" do
   retries     10
 
   notifies :delete, 'file[/tmp/id_rsa_github]' unless node.project.not_pull_request
+end
+
+cookbook_file "#{git_home_directory}/.gitconfig" do
+  source "git_user_gitconfig"
+  owner "git"
+  group "git"
+  mode "0640"
 end
 
 git_hooks = {
