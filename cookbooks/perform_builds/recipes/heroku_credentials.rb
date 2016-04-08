@@ -16,8 +16,8 @@ if project = node[:project]
     end
   else
     ["#{go_home}/.netrc", "#{go_home}/.ssh/id_rsa_heroku"].each do |unused_file|
-      file unused_file do
-        action :delete
+      execute "removing #{unused_file}" do
+        command "rm -rf #{unused_file}"
       end
     end
   end
