@@ -13,7 +13,7 @@ cookbook_file "/var/go/.bundle/config" do
 end
 
 cookbook_file "/var/go/.gitconfig" do
-  source "go_user_gitconfig"
+  source "gitconfig"
   owner 'go'
   group 'go'
   mode '0644'
