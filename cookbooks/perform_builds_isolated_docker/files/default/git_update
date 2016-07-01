@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# --- Command line
+refname="$1"
+oldrev="$2"
+newrev="$3"
+
+# --- fetch everything from upstream
+git fetch --all --prune
+
+# --- Safety check
+if [ -z "$GIT_DIR" ]; then
+  echo "Don't run this script from the command line." >&2
+  echo " (if you want, you could supply GIT_DIR then run" >&2
+  echo "  $0 <ref> <oldrev> <newrev>)" >&2
+  exit 1
+fi
+
+if [ -z "$refname" -o -z "$oldrev" -o -z "$newrev" ]; then
+  echo "usage: $0 <ref> <oldrev> <newrev>" >&2
+  exit 1
+fi
+
+
+# --- if this is a new ref that is not available in upstream then skip all checks
+if [[ $oldrev == '0000000000000000000000000000000000000000' ]]; then
+  echo "$refname is a new ref and can be pushed to upstream"
+  exit 0
+fi
+
+# --- check if this rev is available in upstream and if origin's rev is ahead of what is being pushed
+upstreamrev=$(git rev-parse ${refname})
+if [ "$oldrev" == "$upstreamrev" ]; then
+  echo "$refname is up-to-date and can be pushed to upstream"
+else
+ echo "Cannot push to $refname since it is behind origin"
+ exit 1
+fi
+
+# --- Finished
+exit 0
