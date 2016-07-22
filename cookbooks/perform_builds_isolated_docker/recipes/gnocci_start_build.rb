@@ -30,6 +30,7 @@ node.perform_builds.container_dirs.each do |name, perms|
 end
 
 docker_dir = "/var/lib/docker"
+perms = node.perform_builds.docker_dir[docker_dir]
 
 directory docker_dir do
   recursive true
@@ -38,7 +39,6 @@ directory docker_dir do
   mode  perms[:mode].to_s
 end
 
-perms = node.perform_builds.docker_dir[docker_dir]
 directory ::File.join("/projectdata", "#{node.pipeline}", docker_dir) do
   recursive true
   owner perms[:owner].to_s
