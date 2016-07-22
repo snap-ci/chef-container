@@ -31,6 +31,13 @@ end
 
 docker_dir = "/var/lib/docker"
 
+directory docker_dir do
+  recursive true
+  owner perms[:owner].to_s
+  group perms[:group].to_s
+  mode  perms[:mode].to_s
+end
+
 perms = node.perform_builds.docker_dir[docker_dir]
 directory ::File.join("/projectdata", "#{node.pipeline}", docker_dir) do
   recursive true
