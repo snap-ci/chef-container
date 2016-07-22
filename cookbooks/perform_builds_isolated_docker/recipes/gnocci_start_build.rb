@@ -20,10 +20,19 @@ dirs.each do |dir|
   end
 end
 
+node.perform_builds.container_dirs.each do |name, perms|
+  directory name do
+    recursive true
+    owner perms[:owner].to_s
+    group perms[:group].to_s
+    mode  perms[:mode].to_s
+  end
+end
+
 docker_dir = "/var/lib/docker"
 
 perms = node.perform_builds.docker_dir[docker_dir]
-directory ::File.join("/projectdata", "#{node.pipeline}/#{docker_dir}") do
+directory ::File.join("/projectdata", "#{node.pipeline}", docker_dir) do
   recursive true
   owner perms[:owner].to_s
   group perms[:group].to_s
@@ -35,15 +44,6 @@ mount docker_dir do
   fstype  'none'
   action  [:mount]
   options 'bind,rw'
-end
-
-node.perform_builds.container_dirs.each do |name, perms|
-  directory name do
-    recursive true
-    owner perms[:owner].to_s
-    group perms[:group].to_s
-    mode  perms[:mode].to_s
-  end
 end
 
 include_recipe 'git_user'
