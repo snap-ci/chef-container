@@ -54,24 +54,24 @@ mount docker_dir do
 end
 
 include_recipe 'git_user'
-include_recipe 'perform_builds::setup_ssh'
-include_recipe 'perform_builds::git_clone'
-include_recipe 'perform_builds::heroku_credentials'
-include_recipe 'perform_builds::rubygems_credentials'
-include_recipe 'perform_builds::dot_files'
-include_recipe 'perform_builds::hot_fixes'
+include_recipe 'perform_builds_isolated_docker::setup_ssh'
+include_recipe 'perform_builds_isolated_docker::git_clone'
+include_recipe 'perform_builds_isolated_docker::heroku_credentials'
+include_recipe 'perform_builds_isolated_docker::rubygems_credentials'
+include_recipe 'perform_builds_isolated_docker::dot_files'
+include_recipe 'perform_builds_isolated_docker::hot_fixes'
 
 if node[:platform_family] == 'rhel'
-  include_recipe 'perform_builds::setup_audio_device'
-  include_recipe 'perform_builds::start_database_rhel'
+  include_recipe 'perform_builds_isolated_docker::setup_audio_device'
+  include_recipe 'perform_builds_isolated_docker::start_database_rhel'
 else
-  include_recipe 'perform_builds::start_database_debian'
+  include_recipe 'perform_builds_isolated_docker::start_database_debian'
   service 'docker' do
     action [:restart]
     provider Chef::Provider::Service::Upstart
   end
 end
-include_recipe 'perform_builds::setup_repository_mirror' if node['repositories_base_url']
+include_recipe 'perform_builds_isolated_docker::setup_repository_mirror' if node['repositories_base_url']
 
 service 'xvfb' do
   action [:start]

@@ -1,4 +1,4 @@
-name             "perform_builds"
+name             "perform_builds_isolated_docker"
 maintainer       "ThoughtWorks"
 maintainer_email "hyfather@thoughtworks.com"
 license          "All rights reserved"
