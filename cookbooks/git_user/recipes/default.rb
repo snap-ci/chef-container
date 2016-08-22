@@ -1,3 +1,16 @@
+group "git" do
+  gid 1025
+end
+
+user "git" do
+  home    "/var/lib/git"
+  shell   "/bin/bash"
+  comment "Git Proxy User"
+  group   "git"
+  uid     1025
+  supports ({ :manage_home => true })
+end
+
 directory '/var/lib/git' do
   owner 'git'
   group 'git'
