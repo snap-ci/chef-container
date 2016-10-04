@@ -23,7 +23,6 @@ execute "generate ssh key for go user" do
   command "yes | ssh-keygen -t rsa -f /var/go/.ssh/id_rsa_git_proxy -N ''"
   user  "go"
   group "go"
-  creates "/var/go/.ssh/id_rsa_git_proxy"
 end
 
 ruby_block "copy-proxy-public-key" do
