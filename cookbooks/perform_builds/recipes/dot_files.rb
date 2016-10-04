@@ -5,6 +5,13 @@ directory "/var/go/.bundle" do
   mode  '0755'
 end
 
+directory "/var/go/.docker" do
+  recursive true
+  owner 'go'
+  group 'go'
+  mode  '0755'
+end
+
 cookbook_file "/var/go/.bundle/config" do
   source "bundle-config"
   owner 'go'
