@@ -1,9 +1,0 @@
-Host *
-  StrictHostKeyChecking no
-  UserKnownHostsFile /dev/null
-
-Host heroku.com
-  IdentityFile ~/.ssh/id_rsa_heroku
-
-Host localhost
-  IdentityFile ~/.ssh/id_rsa_git_proxy

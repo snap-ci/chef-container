@@ -29,6 +29,30 @@ node.perform_builds.container_dirs.each do |name, perms|
   end
 end
 
+docker_dir = "/var/lib/docker"
+perms = node.perform_builds.docker_dir[docker_dir]
+
+directory docker_dir do
+  recursive true
+  owner perms[:owner].to_s
+  group perms[:group].to_s
+  mode  perms[:mode].to_s
+end
+
+directory ::File.join("/projectdata", "#{node.pipeline}", docker_dir) do
+  recursive true
+  owner perms[:owner].to_s
+  group perms[:group].to_s
+  mode perms[:mode].to_s
+end
+
+mount docker_dir do
+  device  ::File.join("/projectdata", "#{node.pipeline}", docker_dir)
+  fstype  'none'
+  action  [:mount]
+  options 'bind,rw'
+end
+
 include_recipe 'git_user'
 include_recipe 'perform_builds::setup_ssh'
 include_recipe 'perform_builds::git_clone'

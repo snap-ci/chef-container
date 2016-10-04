@@ -1,4 +1,0 @@
-#!/bin/sh
-echo 'pushing to github...'
-git push
-echo 'success!'
