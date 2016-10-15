@@ -1,33 +1,35 @@
-git_repository_organization_name, git_repository_name = node.project.git.repository_full_name.split('/')
+git_home = "/var/lib/git"
+organization, repo = node.project.git.repository_full_name.split('/')
 
-git_repository_organization_name_path = ::File.join("/var/lib/git", git_repository_organization_name)
-git_clone_path = ::File.join(git_repository_organization_name_path, git_repository_name)
+org_path = ::File.join(git_home, organization)
+repo_path = ::File.join(org_path, repo)
 
-directory git_repository_organization_name_path do
+directory org_path do
   owner "git"
   group "git"
-  mode "0755"
+  mode "700"
   recursive true
 end
 
 execute "perform_git_clone" do
-  command "git clone --mirror #{node.project.git.clone_url} #{git_clone_path}"
+  command "git clone --mirror #{node.project.git.clone_url} #{repo}"
   user "git"
   group "git"
+  cwd org_path
 
   retry_delay 5
   retries     10
 
-  creates ::File.join(git_clone_path, 'HEAD')
+  creates ::File.join(repo_path, 'HEAD')
 end
 
-execute "set /var/lib/git ownership" do
-  command "chown -R git:git /var/lib/git"
+execute "ensure #{git_home} ownership" do
+  command "chown -R git:git #{git_home}"
 end
 
 execute "perform_git_sync" do
   command "git fetch --prune --all"
-  cwd git_clone_path
+  cwd repo_path
   user "git"
   group "git"
 
@@ -38,8 +40,8 @@ execute "perform_git_sync" do
 end
 
 git_hooks = {
-  "git_update" => "#{git_clone_path}/hooks/update",
-  "git_post-receive" => "#{git_clone_path}/hooks/post-receive"
+  "git_update" => "#{repo_path}/hooks/update",
+  "git_post-receive" => "#{repo_path}/hooks/post-receive"
 }
 
 git_hooks.each do |name, path|
@@ -47,6 +49,6 @@ git_hooks.each do |name, path|
     source name
     owner "git"
     group "git"
-    mode "0755"
+    mode "700"
   end
 end
