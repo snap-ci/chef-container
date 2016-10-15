@@ -21,11 +21,8 @@ execute "perform_git_clone" do
   creates ::File.join(git_clone_path, 'HEAD')
 end
 
-directory git_clone_path do
-  owner "git"
-  group "git"
-  mode "0755"
-  recursive true
+execute "set /var/lib/git ownership" do
+  command "chown -R git:git /var/lib/git"
 end
 
 execute "perform_git_sync" do
