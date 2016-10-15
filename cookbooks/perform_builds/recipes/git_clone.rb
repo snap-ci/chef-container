@@ -1,15 +1,9 @@
 git_repository_organization_name, git_repository_name = node.project.git.repository_full_name.split('/')
 
 git_repository_organization_name_path = ::File.join("/var/lib/git", git_repository_organization_name)
-directory git_repository_organization_name_path do
-  owner "git"
-  group "git"
-  mode "0755"
-  recursive true
-end
-
 git_clone_path = ::File.join(git_repository_organization_name_path, git_repository_name)
-directory git_clone_path do
+
+directory git_repository_organization_name_path do
   owner "git"
   group "git"
   mode "0755"
@@ -25,6 +19,13 @@ execute "perform_git_clone" do
   retries     10
 
   creates ::File.join(git_clone_path, 'HEAD')
+end
+
+directory git_clone_path do
+  owner "git"
+  group "git"
+  mode "0755"
+  recursive true
 end
 
 execute "perform_git_sync" do
