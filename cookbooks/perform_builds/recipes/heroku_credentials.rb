@@ -7,13 +7,6 @@ if project = node[:project]
       owner "go"
       group "go"
     end
-
-    file "#{go_home}/.ssh/id_rsa_heroku" do
-      mode "0400"
-      owner "go"
-      group "go"
-      content node.project.heroku.ssh_private_key
-    end
   else
     ["#{go_home}/.netrc", "#{go_home}/.ssh/id_rsa_heroku"].each do |unused_file|
       execute "removing #{unused_file}" do
