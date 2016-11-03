@@ -32,6 +32,16 @@ if database
         retries 3
         provider Chef::Provider::Service::Redhat
       end
+    when 'postgresql95'
+      link '/usr/local/bin/pg_config' do
+        to '/usr/local/bin/pg_config-95'
+      end
+
+      service 'postgresql-9.5' do
+        action [:start]
+        retries 3
+        provider Chef::Provider::Service::Redhat
+      end
     when 'mysql'
       service 'mysqld' do
         action [:start]

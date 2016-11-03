@@ -18,6 +18,11 @@ if database
       link '/usr/bin/pg_config' do
         to '/usr/bin/pg_config-94'
       end
+    when 'postgresql95'
+      execute 'service postgresql start 9.5'
+      link '/usr/bin/pg_config' do
+        to '/usr/bin/pg_config-95'
+      end
     when 'mysql'
       service 'mysql' do
         action [:start]
