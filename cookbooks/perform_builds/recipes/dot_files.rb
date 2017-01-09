@@ -3,6 +3,8 @@ directory "/var/go/.bundle" do
   owner 'go'
   group 'go'
   mode  '0755'
+
+  action (Dir.exist?("/var/go/.rbenv") ? :delete : :create)
 end
 
 cookbook_file "/var/go/.bundle/config" do
@@ -10,6 +12,8 @@ cookbook_file "/var/go/.bundle/config" do
   owner 'go'
   group 'go'
   mode '0644'
+
+  not_if { Dir.exist? ("/var/go/.rbenv") }
 end
 
 cookbook_file "/var/go/.gitconfig" do
