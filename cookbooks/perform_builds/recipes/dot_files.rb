@@ -7,6 +7,13 @@ directory "/var/go/.bundle" do
   action (Dir.exist?("/var/go/.rbenv") ? :delete : :create)
 end
 
+directory "/var/go/.gnupg" do
+  recursive true
+  owner 'go'
+  group 'go'
+  mode  '0600'
+end
+
 directory "/var/go/.bundled-gems" do
   recursive true
   owner 'go'
