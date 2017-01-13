@@ -11,7 +11,7 @@ directory "/var/go/.gnupg" do
   recursive true
   owner 'go'
   group 'go'
-  mode  '0600'
+  mode  '0700'
 end
 
 directory "/var/go/.bundled-gems" do
