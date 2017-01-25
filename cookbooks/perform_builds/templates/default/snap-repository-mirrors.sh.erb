@@ -6,4 +6,8 @@
 
 export NVM_IOJS_ORG_MIRROR=<%= ::File.join(node.repositories_base_url, 'iojs.org/dist') %>
 export NVM_NODEJS_ORG_MIRROR=<%= ::File.join(node.repositories_base_url, 'nodejs.org/dist') %>
-export RBENV_BINARIES_BASE=<%= ::File.join(node.repositories_base_url, 'binaries.snap-ci.com/rubies') %>
+if [ -d "$HOME/.rbenv" ]; then
+  export RBENV_BINARIES_BASE="https://rubies.snap-ci.com/rubies"
+else
+  export RBENV_BINARIES_BASE=<%= ::File.join(node.repositories_base_url, 'binaries.snap-ci.com/rubies') %>
+fi
